@@ -2,7 +2,7 @@
 
 Zen Coding style, declarative DOM tree generator.
 
-## Usage
+### Usage
 
 Creating a node of a particular type:
 
@@ -40,7 +40,14 @@ You can specify the content(as HTML) of the node as well:
 var p = zen('p{lorem ipsum}');
 ```
 
-## License
+### TODO
+
+* Repitition: `zen('li.item*5')`
+* Auto-Indexing: `zen('li.item{item $}')`
+* Appending Children: `zen('ul', zen('li*5{item $}'))`
+* Better Documentation
+
+### License
 
 ([MIT](http://623hs.mit-license.org))
 
