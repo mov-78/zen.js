@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>zen.js spec runner</title>
+
+    <!-- jasmine runtime -->
+    <link rel="stylesheet" href="lib/jasmine.css">
+    <script src="lib/jasmine.core.js"></script>
+    <script src="lib/jasmine.html-adaptor.js"></script>
+
+    <!-- zen.js source file -->
+    <script src="../zen.js"></script>
+
+    <!-- zen.js specs -->
+    <script src="specs/zen.spec.js"></script>
+</head>
+<body>
+    <script>
+        var jasmineEnv = jasmine.getEnv();
+        var htmlReporter = new jasmine.HtmlReporter();
+        jasmineEnv.addReporter(htmlReporter);
+        jasmineEnv.execute();
+    </script>
+</body>
+</html>
