@@ -22,7 +22,7 @@
         }
     }
 
-    window[brand] = function(spec) {
+    window[brand] = function(spec, childNode) {
         spec = spec || '';
 
         var match = spec.match(pattern);
@@ -65,6 +65,10 @@
                 html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
             node.innerHTML = html;
+        }
+
+        if(childNode instanceof Node) {
+            node.appendChild(childNode);
         }
 
         return node;
