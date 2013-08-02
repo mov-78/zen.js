@@ -295,4 +295,29 @@ describe('zen.js', function() {
             expect(zen('{' + XSS + '}').innerHTML).toEqual(XSS);
         });
     });
+
+    //
+    // children-related specs
+    //
+
+    describe('when a zen instance is given as the second parameter', function(){
+        it('should be inserted as the child of the first one', function(){
+            var parent = zen("div.parent", zen("div.child"));
+            var child = parent.children[0];
+            expect(child).toBeDefined();
+            expect(child).toBeTagged("div");
+            expect(child.className).toEqual("child");
+        });        
+        it('should allow nesting of additional children', function(){
+            var parent = zen('div.parent', zen('div.child', zen('div.grandChild')));
+            var child = parent.children[0];
+            expect(child).toBeDefined();
+            expect(child).toBeTagged('div');
+            expect(child.className).toEqual('child');
+            var grandChild = child.children[0];
+            expect(grandChild).toBeDefined();
+            expect(grandChild).toBeTagged('div');
+            expect(grandChild.className).toEqual('grandChild');
+        });
+    });
 });
