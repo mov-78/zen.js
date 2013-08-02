@@ -12,7 +12,7 @@ var div1 = zen('div');
 var div2 = zen();
 ```
 
-Specifying IDs:
+#### Specifying IDs
 
 ```javascript
 var logo = zen('div#logo');
@@ -22,25 +22,25 @@ var logo = zen('div#logo');
 var heading = zen('#heading');
 ```
 
-Specifying classe(s):
+#### Specifying classe(s)
 
 ```javascript
 var item = zen('li.item');
 ```
 
-How about attributes?
+#### How about attributes?
 
 ```javascript
 var link = zen('a[href=https://google.com][title=Google Search]');
 ```
 
-You can specify the content(as HTML) of the node as well:
+#### You can specify the content(as HTML) of the node as well
 
 ```javascript
 var p = zen('p{lorem ipsum}');
 ```
 
-Appending children:
+#### Appending children
 
 There are two ways to do this. 
 
