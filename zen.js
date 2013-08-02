@@ -5,12 +5,11 @@
 
 (function(brand) {
     var patterns = [];
-    patterns.push('([a-z][a-z1-6]*)?');                 // tag
-    patterns.push('(?:#([a-z][-\\w]*))?');              // id
-    patterns.push('((?:\\.[a-z][-\\w]*)+)?');           // class
-    patterns.push('((?:\\[[a-z][^=]*=[^\\]]+\\])+)?');  // attributes
-    patterns.push('(?:\\{(.+)\\})?');                   // content
-    var pattern = '^' + patterns.join('') + '$';
+    patterns.push('([a-z][a-z1-6]*)?'); // tag
+    patterns.push('(?:#([a-z][-\\w]*))?'); // id
+    patterns.push('((?:\\.[a-z][-\\w]*)+)?'); // class
+    patterns.push('((?:\\[[a-z][^=]*=[^\\]]+\\])+)?'); // attributes
+    patterns.push('(?:\\{(.+)\\})?'); // content
 
     function trim(s) {
         return s.replace(/^\s+/, '').replace(/\s+$/, '');
@@ -23,10 +22,19 @@
     }
 
     window[brand] = function(spec, childNode) {
+        var childPattern = /(?:>)[\w]+/g;
+        var pattern = '^' + patterns.join('') + '$';
         spec = spec || '';
 
         var match = spec.match(pattern);
-        if (!match) return null;
+        var childMatch = spec.match(childPattern);
+        if (!(match || childMatch)) return null;
+
+        var childSpecs = childMatch ? spec.split(/>/g) : null;
+        if (childSpecs) {
+            match = childSpecs[0].match(pattern);
+            childSpecs.splice(0, 1);
+        }
 
         // tag
         var tagName = match[1] || 'div';
@@ -67,7 +75,17 @@
             node.innerHTML = html;
         }
 
-        if(childNode instanceof Node) {
+        var specChildNode;
+        if (childSpecs) {
+            childSpecs = childSpecs.reverse();
+            childSpecs.forEach(function(childSpec, index) {
+                specChildNode = window[brand](childSpec, specChildNode);
+            });
+
+            node.appendChild(specChildNode);
+        }
+
+        if (childNode instanceof Node) {
             node.appendChild(childNode);
         }
 
