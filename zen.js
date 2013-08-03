@@ -33,6 +33,7 @@
         var childSpecs = childMatch ? spec.split(/>/g) : null;
         if (childSpecs) {
             match = childSpecs[0].match(pattern);
+            if (!match) return null;
             childSpecs.splice(0, 1);
         }
 
@@ -82,7 +83,9 @@
                 specChildNode = window[brand](childSpec, specChildNode);
             });
 
-            node.appendChild(specChildNode);
+            if (specChildNode instanceof Node) {
+                node.appendChild(specChildNode);
+            }
         }
 
         if (childNode instanceof Node) {

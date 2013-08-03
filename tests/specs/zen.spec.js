@@ -36,9 +36,9 @@ describe('zen.js', function() {
             },
             toBeTagged: function(expectedTagName) {
                 if ('nodeName' in this.actual) {
-                this.message = function() {
-                    return "Expected "  + this.actual.nodeName + " to be tagged as " + expectedTagName + ".";
-                };
+                    this.message = function() {
+                        return "Expected " + this.actual.nodeName + " to be tagged as " + expectedTagName + ".";
+                    };
                     return this.actual.nodeName.match(new RegExp(expectedTagName, 'i'));
                 } else {
                     return false;
@@ -326,14 +326,14 @@ describe('zen.js', function() {
     });
 
     describe('when the spec contains a child operator', function() {
-        it('should create a child element described by the operand', function(){
+        it('should create a child element described by the operand', function() {
             var specs = [
                 'ul>li.child',
                 'div>a[href=http://www.google.com/]',
                 'a>b>c>d'
             ];
 
-            specs.forEach(function(spec){
+            specs.forEach(function(spec) {
                 var elem = zen(spec);
                 expect(elem).not.toBeNull();
                 expect(elem.children.length).toBe(1);
@@ -354,12 +354,26 @@ describe('zen.js', function() {
         });
     });
 
-    describe('when the spec contains invalid child elements', function() {
-        it('should throw away the invalid specs and return null instead', function(){
+    describe('when the spec contains child elements and invalid entries', function() {
+        it('should throw away the invalid children', function() {
             var invalid_specs = [
                 'ul>li[asd=]',
-                'div>a[href=http://<>www.google.com/]'
+                'div>a[href=http://<>www.google.com/]',
             ];
-        })
-    });
+
+            var ul = zen(invalid_specs[0]);
+            expect(ul.children.length).toEqual(0);
+            var div = zen(invalid_specs[1]);
+            expect(div.children.length).toEqual(0);
+        });
+
+        it('should throw away the whole spec and return null if the parent element is invalid', function() {
+            var invalid_specs = [
+                'ul[]=afa]>li'
+            ];
+
+            var ul = zen(invalid_specs[0]);
+            expect(ul).toEqual(null);
+        });
+    })
 });
