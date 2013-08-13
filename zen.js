@@ -21,7 +21,7 @@
         }
     }
 
-    window[brand] = function(spec, childNode) {
+    window[brand] = function(spec, childNodes) {
         var childPattern = /(?:>)[\w]+/g;
         var pattern = '^' + patterns.join('') + '$';
         spec = spec || '';
@@ -88,8 +88,14 @@
             }
         }
 
-        if (childNode instanceof Node) {
-            node.appendChild(childNode);
+        if (childNodes instanceof Node) {
+            node.appendChild(childNodes);
+        } else if (childNodes instanceof Array) {
+            childNodes.forEach(function(childNode, index) {
+                if (childNode instanceof Node) {
+                    node.appendChild(childNode);
+                }
+            });
         }
 
         return node;
