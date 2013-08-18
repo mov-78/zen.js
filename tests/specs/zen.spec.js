@@ -323,6 +323,18 @@ describe('zen.js', function() {
             expect(grandChild).toBeTagged('div');
             expect(grandChild.className).toEqual('grandChild');
         });
+        
+        it('should allow an array of children of the first one', function() {
+            var parent = zen("div.parent", [zen("div.child0"), zen("div.child1")]);
+            var child0 = parent.children[0];
+            var child1 = parent.children[1];
+            expect(child0).toBeDefined();
+            expect(child0).toBeTagged("div");
+            expect(child0.className).toEqual("child0");
+            expect(child1).toBeDefined();
+            expect(child1).toBeTagged("div");
+            expect(child1.className).toEqual("child1");
+        });
     });
 
     describe('when the spec contains a child operator', function() {
