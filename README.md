@@ -51,3 +51,7 @@ var p = zen('p{lorem ipsum}');
 
 ([MIT](http://623hs.mit-license.org))
 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/623HS/zen.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
