@@ -43,7 +43,7 @@ var p = zen('p{lorem ipsum}');
 You can append children:
 
 ```javascript
-var p = zen('div', zen('p{lorem ipsum}'));
+var parent = zen('div', zen('p{lorem ipsum}'));
 ```
 
 and strings (gets append as textNodes):
@@ -55,7 +55,7 @@ var p = zen('p', 'lorem ipsum');
 and combine them in arrays:
 
 ```javascript
-var p = zen('h1', [zen('i.icon'), 'Foobar']);
+var h1 = zen('h1', [zen('i.icon'), 'Foobar']);
 ```
 
 ### TODO
