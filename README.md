@@ -34,17 +34,34 @@ How about attributes?
 var link = zen('a[href=https://google.com][title=Google Search]');
 ```
 
-You can specify the content(as HTML) of the node as well:
+You can specify the content (as HTML) of the node as well:
 
 ```javascript
 var p = zen('p{lorem ipsum}');
+```
+
+You can append children:
+
+```javascript
+var p = zen('div', zen('p{lorem ipsum}'));
+```
+
+and strings (gets append as textNodes):
+
+```javascript
+var p = zen('p', 'lorem ipsum');
+```
+
+and combine them in arrays:
+
+```javascript
+var p = zen('h1', [zen('i.icon'), 'Foobar']);
 ```
 
 ### TODO
 
 * Repitition: `zen('li.item*5')`
 * Auto-Indexing: `zen('li.item{item $}')`
-* Appending Children: `zen('ul', zen('li*5{item $}'))`
 * Better Documentation
 
 ### License

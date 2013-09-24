@@ -36,6 +36,9 @@ describe('zen.js', function() {
             },
             toBeTagged: function(expectedTagName) {
                 if ('nodeName' in this.actual) {
+                    this.message = function() {
+                        return "Expected " + this.actual.nodeName + " to be tagged as " + expectedTagName + ".";
+                    };
                     return this.actual.nodeName.match(new RegExp(expectedTagName, 'i'));
                 } else {
                     return false;
@@ -278,10 +281,10 @@ describe('zen.js', function() {
     // content-related specs
     //
 
-    describe('when the spec contains valid content definitions', function(){
+    describe('when the spec contains valid content definitions', function() {
         it('should be able to recognize and inject the content to the node', function() {
             var txt = '!@#$%^*()1234567890[];:\'"\\/,.`~颜文字ƒ';
-            expect(zen('p.para[foo=bar]{' + txt +'}').innerHTML).toEqual(txt);
+            expect(zen('p.para[foo=bar]{' + txt + '}').innerHTML).toEqual(txt);
         });
         it('should sanitize content by default', function() {
             expect(zen.sanitize).toBeDefined();
@@ -293,6 +296,76 @@ describe('zen.js', function() {
             zen.sanitize = false;
             var XSS = '<script></script>';
             expect(zen('{' + XSS + '}').innerHTML).toEqual(XSS);
+        });
+    });
+    
+    //
+    // children-related specs
+    //
+
+    describe('when a zen instance is given as the second parameter', function() {
+        it('should be inserted as the child of the first one', function() {
+            var parent = zen("div.parent", zen("div.child"));
+            var child = parent.children[0];
+            expect(child).toBeDefined();
+            expect(child).toBeTagged("div");
+            expect(child.className).toEqual("child");
+        });
+
+        it('should allow nesting of additional children', function() {
+            var parent = zen('div.parent', zen('div.child', zen('div.grandChild')));
+            var child = parent.children[0];
+            expect(child).toBeDefined();
+            expect(child).toBeTagged('div');
+            expect(child.className).toEqual('child');
+            var grandChild = child.children[0];
+            expect(grandChild).toBeDefined();
+            expect(grandChild).toBeTagged('div');
+            expect(grandChild.className).toEqual('grandChild');
+        });
+    });
+    
+    describe('when a string is given as the second parameter', function() {
+        it('should be inserted as a textNode', function() {
+            var parent = zen('div.parent', 'Foobar');
+            var textNode = parent.childNodes[0];
+            expect(textNode).toBeDefined();
+            expect(textNode.nodeType).toEqual(3);
+            expect(textNode.nodeValue).toEqual('Foobar');
+        });
+    });
+    
+    describe('when a array is given as the second parameter', function() {
+        it('should allow an array of zen instances', function() {
+            var parent = zen("div.parent", [zen("div.child0"), zen("div.child1")]);
+            var child0 = parent.children[0];
+            var child1 = parent.children[1];
+            expect(child0).toBeDefined();
+            expect(child0).toBeTagged("div");
+            expect(child0.className).toEqual("child0");
+            expect(child1).toBeDefined();
+            expect(child1).toBeTagged("div");
+            expect(child1.className).toEqual("child1");
+        });
+        
+        it('should allow an array of zen instances and strings', function() {
+            var parent = zen('div.parent', [zen('div.child', 'foo'), 'bar']);
+            var child = parent.childNodes[0];
+            var childTextNode = child.childNodes[0];
+            var textNode = parent.childNodes[1];
+            expect(child).toBeDefined();
+            expect(child).toBeTagged('div');
+            expect(childTextNode).toBeDefined();
+            expect(childTextNode.nodeType).toEqual(3);
+            expect(childTextNode.nodeValue).toEqual('foo');
+            expect(textNode).toBeDefined();
+            expect(textNode.nodeType).toEqual(3);
+            expect(textNode.nodeValue).toEqual('bar');
+            
+            
+console.log(zen('div', zen('p{lorem ipsum}')));
+console.log(zen('p', 'lorem ipsum'));
+console.log(zen('h1', [zen('i.icon'), 'Foobar']));
         });
     });
 });

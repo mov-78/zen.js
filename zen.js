@@ -22,7 +22,7 @@
         }
     }
 
-    window[brand] = function(spec) {
+    window[brand] = function(spec, childNodes) {
         spec = spec || '';
 
         var match = spec.match(pattern);
@@ -65,6 +65,21 @@
                 html = html.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
             node.innerHTML = html;
+        }
+        
+        // children
+        if (childNodes instanceof Node) {
+            node.appendChild(childNodes);
+        } else if (typeof childNodes === 'string') {
+            node.appendChild(document.createTextNode(childNodes));
+        } else if (childNodes instanceof Array) {
+            childNodes.forEach(function(childNode, index) {
+                if (childNode instanceof Node) {
+                    node.appendChild(childNode);
+                } else if (typeof childNode === 'string') {
+                	node.appendChild(document.createTextNode(childNode));
+                }
+            });
         }
 
         return node;
