@@ -361,11 +361,6 @@ describe('zen.js', function() {
             expect(textNode).toBeDefined();
             expect(textNode.nodeType).toEqual(3);
             expect(textNode.nodeValue).toEqual('bar');
-            
-            
-console.log(zen('div', zen('p{lorem ipsum}')));
-console.log(zen('p', 'lorem ipsum'));
-console.log(zen('h1', [zen('i.icon'), 'Foobar']));
         });
     });
 });
